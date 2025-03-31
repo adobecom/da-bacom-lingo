@@ -5,5 +5,3 @@ node_modules/*
 .DS_Store
 .idea
 .env
-.github/workflows/import/*
-.github/workflows/listen-to-publish-events.yaml
