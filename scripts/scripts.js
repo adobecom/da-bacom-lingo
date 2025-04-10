@@ -6,11 +6,11 @@ const CONFIG = {
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   page: {
-    pdfViewerClientId: 'c30e0765380b47219774251d8eb80005',
+    pdfViewerClientId: 'ce759fc714064892aec63d71b39b6f3e',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   live: {
-    pdfViewerClientId: '5e5a5032800f4918844f13b344f58db6',
+    pdfViewerClientId: 'c4728f7d1a344f74b04252d1259a986c',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   stage: {
@@ -22,14 +22,6 @@ const CONFIG = {
     edgeConfigId: '65acfd54-d9fe-405c-ba04-8342d6782ab0',
     pdfViewerClientId: '4520c0edfbf147158758d71d18765fec',
     pdfViewerReportSuite: 'adbadobenonacdcprod,adbadobedxprod,adbadobeprototype',
-  },
-  hlxPage: {
-    pdfViewerClientId: '3b685312b5784de6943647df19f1f492',
-    pdfViewerReportSuite: 'adbadobedxqa',
-  },
-  hlxLive: {
-    pdfViewerClientId: '23bd4fff42fc4b4da38b3d89492a0abc',
-    pdfViewerReportSuite: 'adbadobedxqa',
   },
   locales: {
     '': { ietf: 'en-US', tk: 'hah7vzn.css' },
