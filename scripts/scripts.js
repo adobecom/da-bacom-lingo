@@ -5,13 +5,17 @@ const CONFIG = {
     pdfViewerClientId: '3b685312b5784de6943647df19f1f492',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
-  stage: {
-    edgeConfigId: '7d1ba912-10b6-4384-a8ff-4bfb1178e869',
-    pdfViewerClientId: '3b685312b5784de6943647df19f1f492',
+  page: {
+    pdfViewerClientId: 'ce759fc714064892aec63d71b39b6f3e',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   live: {
-    pdfViewerClientId: '23bd4fff42fc4b4da38b3d89492a0abc',
+    pdfViewerClientId: 'c4728f7d1a344f74b04252d1259a986c',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  stage: {
+    edgeConfigId: '7d1ba912-10b6-4384-a8ff-4bfb1178e869',
+    pdfViewerClientId: '1573324fdb644866b51580fbaa5b6465',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   prod: {
@@ -105,7 +109,7 @@ const CONFIG = {
     si: { ietf: 'sl-SI', tk: 'qxw8hzm.css' },
     sk: { ietf: 'sk-SK', tk: 'qxw8hzm.css' },
     th_en: { ietf: 'en', tk: 'hah7vzn.css' },
-    th_th: { ietf: 'th', tk: 'qxw8hzm.css' },
+    th_th: { ietf: 'th', tk: 'lqo2bst.css' },
     tr: { ietf: 'tr-TR', tk: 'qxw8hzm.css' },
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
     ua: { ietf: 'uk-UA', tk: 'qxw8hzm.css' },
@@ -129,6 +133,11 @@ const CONFIG = {
   stageDomainsMap: {
     'business.stage.adobe.com': { 'business.adobe.com': 'origin' },
     '.business-graybox.adobe.com': { 'business.adobe.com': 'origin' },
+  },
+  jarvis: {
+    id: 'BACOMChat1-Worldwide',
+    version: '1.0',
+    onDemand: false,
   },
 };
 
@@ -201,7 +210,7 @@ async function loadPage() {
   }
   const observer = new PerformanceObserver((list) => {
     list.getEntries().forEach((entry) => {
-      if (entry.responseStatus === 404) window.lana?.log(`The resource ${entry.name} returned a 404 status.`, { tags: 'errorType=error,module=resource-404' });
+      if (entry.responseStatus === 404) window.lana?.log(`The resource ${entry.name} returned a 404 status.`, { tags: 'resource-404' });
     });
   });
   observer.observe({ type: 'resource', buffered: true });
