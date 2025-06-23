@@ -3,6 +3,7 @@
   "host": "business.adobe.com",
   "editUrlLabel": "Document Authoring",
   "editUrlPattern": "https://da.live/edit#/{{org}}/{{site}}{{pathname}}",
+  "trustedHosts": ["milo.adobe.com"],
   "plugins": [
     {
       "id": "tools",
@@ -36,7 +37,7 @@
       "url": "https://da.live/nx/public/plugins/rollout.html"
     }
   ],
-    "apps": [
+  "apps": [
       {
         "title": "CaaS Configurator",
         "description": "Content as a Service.",
@@ -46,6 +47,23 @@
         "title": "FaaS Configurator",
         "description": "Deprecated.",
         "url": "https://milo.adobe.com/tools/faas"
+      },
+      {
+        "title": "Search",
+        "description": "Unlocking Precision with Advanced Contextual Filters",
+        "image": "https://milostudio--milo--adobecom.aem.live/img/tools/search.jpg",
+        "url": "https://da.live/app/adobecom/da-bacom/tools/ms-apps/search"
+      },
+      {
+        "title": "Bulk Operations",
+        "description": "Bulk Operations",
+        "url": "https://da.live/app/adobecom/da-bacom/tools/ms-apps/bulkops" 
+      },
+      {
+        "title": "Graybox",
+        "description": "Admin tools for Milo Graybox",
+        "image": "https://publish-p133406-e1301188.adobeaemcloud.com/content/dam/milo/app-icons/graybox.jpg",
+        "url": "https://da.live/app/adobecom/milo/tools/graybox"
       }
     ]
 }

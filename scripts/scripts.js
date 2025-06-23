@@ -5,18 +5,22 @@ const CONFIG = {
     pdfViewerClientId: '3b685312b5784de6943647df19f1f492',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
-  stage: {
-    edgeConfigId: '7d1ba912-10b6-4384-a8ff-4bfb1178e869',
-    pdfViewerClientId: '3b685312b5784de6943647df19f1f492',
+  page: {
+    pdfViewerClientId: 'ce759fc714064892aec63d71b39b6f3e',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   live: {
-    pdfViewerClientId: '23bd4fff42fc4b4da38b3d89492a0abc',
+    pdfViewerClientId: 'c4728f7d1a344f74b04252d1259a986c',
+    pdfViewerReportSuite: 'adbadobedxqa',
+  },
+  stage: {
+    edgeConfigId: '7d1ba912-10b6-4384-a8ff-4bfb1178e869',
+    pdfViewerClientId: '1573324fdb644866b51580fbaa5b6465',
     pdfViewerReportSuite: 'adbadobedxqa',
   },
   prod: {
     edgeConfigId: '65acfd54-d9fe-405c-ba04-8342d6782ab0',
-    pdfViewerClientId: '4520c0edfbf147158758d71d18765fec',
+    pdfViewerClientId: '16769f4e1e7b4e3b94c1ed23eafb8870',
     pdfViewerReportSuite: 'adbadobenonacdcprod,adbadobedxprod,adbadobeprototype',
   },
   locales: {
@@ -105,7 +109,7 @@ const CONFIG = {
     si: { ietf: 'sl-SI', tk: 'qxw8hzm.css' },
     sk: { ietf: 'sk-SK', tk: 'qxw8hzm.css' },
     th_en: { ietf: 'en', tk: 'hah7vzn.css' },
-    th_th: { ietf: 'th', tk: 'qxw8hzm.css' },
+    th_th: { ietf: 'th', tk: 'lqo2bst.css' },
     tr: { ietf: 'tr-TR', tk: 'qxw8hzm.css' },
     tw: { ietf: 'zh-TW', tk: 'jay0ecd' },
     ua: { ietf: 'uk-UA', tk: 'qxw8hzm.css' },
@@ -130,6 +134,11 @@ const CONFIG = {
     'business.stage.adobe.com': { 'business.adobe.com': 'origin' },
     '.business-graybox.adobe.com': { 'business.adobe.com': 'origin' },
   },
+  jarvis: {
+    id: 'BACOMChat1-Worldwide',
+    version: '1.0',
+    onDemand: false,
+  },
 };
 
 const eagerLoad = (img) => {
@@ -144,18 +153,24 @@ const loadStyle = (path) => {
   document.head.appendChild(link);
 };
 
-(async function loadLCPImage() {
-  const marquee = document.querySelector('.marquee');
-  if (!marquee) {
-    eagerLoad(document.querySelector('img'));
-    return;
+export const getLCPImages = (doc) => {
+  const lcpSection = doc.querySelector('.marquee, .hero-marquee, .section-metadata img');
+  if (!lcpSection) return [doc.querySelector('img')];
+  if (lcpSection.nodeName === 'IMG') return [lcpSection];
+  if (lcpSection.classList.contains('split')) return lcpSection.querySelectorAll('img');
+  const marqueeDiv = lcpSection.firstElementChild;
+  const foregroundImg = lcpSection.querySelector(':scope > div:last-child img');
+  if (marqueeDiv.childElementCount > 1) {
+    if (window.innerWidth < 600) return [marqueeDiv.querySelector(':scope > div:first-child img') || foregroundImg];
+    if (window.innerWidth >= 600 && window.innerWidth < 1200) return [marqueeDiv.querySelector(':scope > div:nth-child(2) img') || foregroundImg];
+    if (window.innerWidth >= 1200) return [marqueeDiv.querySelector(':scope > div:last-child img') || foregroundImg];
   }
+  return [lcpSection.querySelector('img') || doc.querySelector('img')];
+};
 
-  if (marquee.classList.contains('split')) {
-    marquee.querySelectorAll('img').forEach(eagerLoad);
-    return;
-  }
-  eagerLoad(marquee.querySelector('img'));
+(async function loadLCPImage() {
+  const lcpImages = getLCPImages(document);
+  lcpImages?.forEach(eagerLoad);
 }());
 
 export function setLibs(location) {
@@ -179,6 +194,7 @@ export const LIBS = setLibs(window.location);
 async function loadPage() {
   const { loadArea, loadLana, setConfig, createTag, getMetadata } = await import(`${LIBS}/utils/utils.js`);
   if (getMetadata('template') === '404') window.SAMPLE_PAGEVIEWS_AT_RATE = 'high';
+
   const metaCta = document.querySelector('meta[name="chat-cta"]');
   if (metaCta && !document.querySelector('.chat-cta')) {
     const isMetaCtaDisabled = metaCta?.content === 'off';
@@ -188,8 +204,16 @@ async function loadPage() {
       if (lastSection) lastSection.insertAdjacentElement('beforeend', chatDiv);
     }
   }
+
+  const chatWidgetFrag = document.querySelector('meta[name="chat-widget"');
+  if (chatWidgetFrag) {
+    const a = createTag('a', { href: chatWidgetFrag.content }, chatWidgetFrag.content);
+    const lastSection = document.body.querySelector('main > div:last-of-type');
+    if (lastSection) lastSection.insertAdjacentElement('beforeend', a);
+  }
+
   setConfig({ ...CONFIG, miloLibs: LIBS });
-  loadLana({ clientId: 'bacom', tags: 'info' });
+  loadLana({ clientId: 'bacom', tags: 'info', endpoint: 'https://business.adobe.com/lana/ll', endpointStage: 'https://business.stage.adobe.com/lana/ll' });
   await loadArea();
 
   if (document.querySelector('meta[name="aa-university"]')) {
@@ -201,7 +225,7 @@ async function loadPage() {
   }
   const observer = new PerformanceObserver((list) => {
     list.getEntries().forEach((entry) => {
-      if (entry.responseStatus === 404) window.lana?.log(`The resource ${entry.name} returned a 404 status.`, { tags: 'errorType=error,module=resource-404' });
+      if (entry.responseStatus === 404) window.lana?.log(`The resource ${entry.name} returned a 404 status.`, { tags: 'resource-404' });
     });
   });
   observer.observe({ type: 'resource', buffered: true });
